@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P&G 샴푸 라인업 인터랙티브 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Neutrals with soft brand accents) -->
+    <!-- Application Structure Plan: A brand-centric, non-linear exploratory structure. The app opens with a strategic overview dashboard, allowing users to grasp the big picture. A sticky navigation bar enables immediate access to dedicated sections for each of the five key brands. This structure was chosen over a linear report format to empower users to freely explore content based on their interests, either getting a quick summary or diving deep into a specific brand. This enhances usability by transforming a static document into an interactive discovery tool. -->
+    <!-- Visualization & Content Choices: 
+        - P&G Strategy: Goal(Inform) -> Interactive Cards -> Hover to reveal details -> Justification(Engagingly presents key pillars) -> HTML/CSS/JS.
+        - Brand Positioning: Goal(Compare) -> Bar Chart -> Tooltips for focus areas -> Justification(Clear visual comparison of brand roles) -> Chart.js.
+        - Pantene Products: Goal(Organize) -> Tabbed Interface -> Click to switch content -> Justification(Efficiently organizes product lines in limited space) -> HTML/CSS/JS.
+        - Head & Shoulders Comparison: Goal(Compare) -> Radar Chart -> Click to update details -> Justification(Multivariate comparison of specialized products) -> Chart.js.
+        - Herbal Essences/Rejoice/Hair Recipe: Goal(Inform/Organize) -> Interactive Cards/Diagrams -> Click/Hover for details -> Justification(Visually appealing way to showcase unique selling points like 'Clean Formula' or 'Localized Ingredients') -> HTML/CSS/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F9F9F7;
+            color: #333;
+        }
+        .brand-nav-button {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .brand-nav-button.active, .brand-nav-button:hover {
+            color: #1a1a1a;
+            border-bottom-color: #A0522D;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 300px;
+            width: 100%;
+            max-width: 600px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-xl md:text-2xl font-bold text-gray-800">P&G 샴푸 포트폴리오 분석</h1>
+                <nav id="main-nav" class="hidden md:flex items-center space-x-4">
+                    <button data-target="overview" class="brand-nav-button text-sm font-medium text-gray-600 py-2 active">전략 개요</button>
+                    <button data-target="pantene" class="brand-nav-button text-sm font-medium text-gray-600 py-2">팬틴</button>
+                    <button data-target="head-shoulders" class="brand-nav-button text-sm font-medium text-gray-600 py-2">헤드앤숄더</button>
+                    <button data-target="herbal-essences" class="brand-nav-button text-sm font-medium text-gray-600 py-2">허벌 에센스</button>
+                    <button data-target="hair-recipe" class="brand-nav-button text-sm font-medium text-gray-600 py-2">헤어 레시피</button>
+                    <button data-target="rejoice" class="brand-nav-button text-sm font-medium text-gray-600 py-2">리조이스</button>
+                </nav>
+                <div class="md:hidden">
+                    <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option value="overview">전략 개요</option>
+                        <option value="pantene">팬틴</option>
+                        <option value="head-shoulders">헤드앤숄더</option>
+                        <option value="herbal-essences">허벌 에센스</option>
+                        <option value="hair-recipe">헤어 레시피</option>
+                        <option value="rejoice">리조이스</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <section id="overview" class="content-section active">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-2 text-gray-800">한국 시장을 이끄는 P&G의 핵심 전략</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">P&G는 혁신, 프리미엄화, 트렌드 부합, 현지화라는 4대 핵심 전략을 통해 역동적인 한국 샴푸 시장에서 리더십을 공고히 하고 있습니다. 각 브랜드는 고유한 포지셔닝으로 다양한 소비자 니즈에 대응합니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <div class="card bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-400">
+                    <h3 class="font-bold text-xl mb-2">지속적인 혁신</h3>
+                    <p class="text-gray-600 text-sm">팬틴의 Pro-V 포뮬러를 케라틴, 히알루론산 등 고급 성분으로 전면 업그레이드하여 기술적 우위를 확보합니다.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-md border-l-4 border-purple-400">
+                    <h3 class="font-bold text-xl mb-2">프리미엄화</h3>
+                    <p class="text-gray-600 text-sm">헤드앤숄더 '프로페셔널 라인'과 같이 고농축 활성 성분으로 특정 소비자층을 공략하며 가치를 높입니다.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-md border-l-4 border-green-400">
+                    <h3 class="font-bold text-xl mb-2">소비자 트렌드 부합</h3>
+                    <p class="text-gray-600 text-sm">허벌 에센스의 '클린 뷰티'와 헤어 레시피의 '무첨가' 컨셉으로 성분 투명성을 중시하는 트렌드에 발맞춥니다.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-md border-l-4 border-pink-400">
+                    <h3 class="font-bold text-xl mb-2">현지화</h3>
+                    <p class="text-gray-600 text-sm">리조이스의 '제주 장미', '한국 라벤더' 에디션처럼 한국 고유의 성분을 활용하여 문화적 공감대를 형성합니다.</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold text-center mb-4">P&G 샴푸 브랜드 포지셔닝 맵</h3>
+                <p class="text-md text-gray-600 text-center mb-6 max-w-2xl mx-auto">각 브랜드가 어떤 소비자 고민에 집중하고 있는지 한눈에 비교해 보세요. 막대를 클릭하면 해당 브랜드 섹션으로 이동합니다.</p>
+                <div class="chart-container">
+                    <canvas id="brandPositioningChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="pantene" class="content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-2 text-amber-600">Pantene: 과학으로 입증된 모발 손상 케어</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">팬틴은 P&G의 대표적인 글로벌 헤어케어 브랜드로, '프로-V' 포뮬러를 기반으로 한 과학적인 손상 케어 솔루션을 제공합니다. 최근에는 케라틴, 히알루론산, 콜라겐을 더해 '전문가 수준의 홈케어'로 진화했습니다.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="flex justify-center border-b mb-6">
+                    <button class="product-tab-btn active text-lg font-semibold py-2 px-4 border-b-2 border-amber-500 text-amber-600" data-target="pantene-damage">극손상 케어</button>
+                    <button class="product-tab-btn text-lg font-semibold py-2 px-4 text-gray-500" data-target="pantene-smooth">실키 스무드</button>
+                </div>
+                <div id="pantene-content">
+                </div>
+            </div>
+        </section>
+
+        <section id="head-shoulders" class="content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-2 text-sky-600">Head & Shoulders: 전문적인 두피 건강 솔루션</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">비듬 케어의 대명사 헤드앤숄더는 이제 '프로페셔널 라인'을 통해 특정 두피 고민을 위한 맞춤 솔루션을 제공합니다. 강화된 성분으로 젊은 소비자층까지 공략하며 '두피 건강' 브랜드로 확장하고 있습니다.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                 <h3 class="text-2xl font-bold text-center mb-4">프로페셔널 라인 심층 비교</h3>
+                 <p class="text-md text-gray-600 text-center mb-6 max-w-2xl mx-auto">두 가지 전문 라인이 어떤 특징에 중점을 두는지 비교해 보세요. 라벨을 클릭하여 상세 설명을 확인할 수 있습니다.</p>
+                <div class="chart-container">
+                    <canvas id="headShouldersChart"></canvas>
+                </div>
+                <div id="head-shoulders-desc" class="mt-6 p-4 bg-sky-50 rounded-lg text-center">
+                    <p class="text-gray-700">차트의 라벨을 클릭하여 제품별 상세 설명을 확인하세요.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="herbal-essences" class="content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-2 text-green-600">Herbal Essences: 자연의 향기와 클린 뷰티</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">허벌 에센스는 자연 유래 성분과 감각적인 향으로 '클린 뷰티' 트렌드를 선도합니다. 설페이트 프리 등 순한 포뮬러로 성분에 민감한 소비자들에게 큰 사랑을 받고 있습니다.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card bg-white p-6 rounded-lg shadow-md text-center">
+                    <h3 class="font-bold text-xl mb-2">리페어 아르간 오일</h3>
+                    <p class="text-gray-600 text-sm">손상된 모발에 깊은 보습과 윤기를 부여하여 건강하게 복구합니다.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-md text-center">
+                    <h3 class="font-bold text-xl mb-2">수분 알로에베라</h3>
+                    <p class="text-gray-600 text-sm">두피와 모발에 뛰어난 보습 및 진정 효과를 제공하여 촉촉함을 유지합니다.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-md text-center">
+                    <h3 class="font-bold text-xl mb-2">로즈힙 & 호호바 오일</h3>
+                    <p class="text-gray-600 text-sm">모발에 윤기와 부드러움을 더하고 모발 본연의 힘을 강화합니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="hair-recipe" class="content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-2 text-orange-500">Hair Recipe: 모발을 위한 건강한 푸드 레시피</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">'음식에서 영감을 받은 헤어 케어'라는 독특한 컨셉의 브랜드입니다. '9가지 무첨가' 클린 포뮬러와 안전성 테스트 완료로 제품의 순수함과 안전성을 신뢰하는 소비자들을 위한 선택지입니다.</p>
+            </div>
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold text-center mb-6">9-Free 클린 포뮬러</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
+                    <div class="p-3 bg-orange-50 rounded-lg"><span class="font-medium">실리콘 오일</span> Free</div>
+                    <div class="p-3 bg-orange-50 rounded-lg"><span class="font-medium">설페이트계 계면활성제</span> Free</div>
+                    <div class="p-3 bg-orange-50 rounded-lg"><span class="font-medium">동물성 원료</span> Free</div>
+                    <div class="p-3 bg-orange-50 rounded-lg"><span class="font-medium">광물성 오일</span> Free</div>
+                    <div class="p-3 bg-orange-50 rounded-lg"><span class="font-medium">합성 색소</span> Free</div>
+                    <div class="p-3 bg-orange-50 rounded-lg"><span class="font-medium">트리에탄올아민</span> Free</div>
+                </div>
+                 <p class="text-center mt-6 text-gray-600">이 외에도 폴리아크릴아마이드, 이미다졸리디닐우레아 등 3가지 성분을 배제하여 두피와 모발에 순한 케어를 제공합니다.</p>
+            </div>
+        </section>
+
+        <section id="rejoice" class="content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-2 text-pink-500">Rejoice: 한국의 아름다움을 담은 부드러움</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">리조이스는 P&G의 현지화 전략을 가장 잘 보여주는 브랜드입니다. 한국 소비자들에게 친숙한 제주 장미, 한국 라벤더 등에서 영감을 받은 성분을 통해 문화적 공감대를 형성하고 맞춤형 케어를 제공합니다.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card bg-white p-6 rounded-lg shadow-md border-t-4 border-pink-400">
+                    <h3 class="font-bold text-xl mb-2">제주 장미 에디션</h3>
+                    <p class="text-gray-600">한국 제주 장미에서 영감을 받은 포뮬러로, 모발에 부드러움과 매끄러운 영양을 공급합니다.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-400">
+                    <h3 class="font-bold text-xl mb-2">한국 라벤더 블룸</h3>
+                    <p class="text-gray-600">한국 라벤더의 향기와 효능을 담아 세정, 영양 공급, 모발 건강 회복을 한번에 해결합니다.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainNavButtons = document.querySelectorAll('#main-nav button');
+            const mobileNav = document.getElementById('mobile-nav');
+            const sections = document.querySelectorAll('.content-section');
+            const brandPositioningChartCanvas = document.getElementById('brandPositioningChart');
+
+            const data = {
+                pantene: {
+                    'pantene-damage': {
+                        title: '극손상 케어 라인',
+                        desc: '심하게 손상된 모발을 집중적으로 복구하고 영양을 공급합니다. Pro-V 포뮬러에 케라틴, 히알루론산, 콜라겐이 더해져 집에서도 전문가 수준의 케어 효과를 제공합니다.',
+                        icon: '🔧'
+                    },
+                    'pantene-smooth': {
+                        title: '실키 스무드 라인',
+                        desc: '건조하고 푸석한 모발의 곱슬거림을 개선하여 부드럽고 윤기나는 머릿결로 가꿔줍니다. 풍부한 거품과 뛰어난 세정력이 특징입니다.',
+                        icon: '✨'
+                    }
+                },
+                headShoulders: {
+                    '가려운 두피 케어': '건조로 인한 두피 가려움을 완화하고 두피 장벽을 강화하는 데 집중합니다. 민감한 두피에 적합합니다.',
+                    '오일 컨트롤': '과도한 유분을 효과적으로 제어하고 두피 냄새를 관리하여 하루 종일 상쾌함을 유지합니다. 지성 두피에 이상적입니다.'
+                }
+            };
+
+            function showSection(targetId) {
+                sections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+
+                mainNavButtons.forEach(button => {
+                    button.classList.toggle('active', button.dataset.target === targetId);
+                });
+                mobileNav.value = targetId;
+            }
+
+            mainNavButtons.forEach(button => {
+                button.addEventListener('click', () => showSection(button.dataset.target));
+            });
+            
+            mobileNav.addEventListener('change', (e) => showSection(e.target.value));
+
+            brandPositioningChartCanvas.addEventListener('click', (evt) => {
+                const points = brandPositioningChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+                if (points.length) {
+                    const firstPoint = points[0];
+                    const label = brandPositioningChart.data.labels[firstPoint.index];
+                    const targetId = {
+                        '팬틴': 'pantene',
+                        '헤드앤숄더': 'head-shoulders',
+                        '허벌 에센스': 'herbal-essences',
+                        '헤어 레시피': 'hair-recipe',
+                        '리조이스': 'rejoice'
+                    }[label];
+                    if(targetId) showSection(targetId);
+                }
+            });
+
+            const brandPositioningChart = new Chart(brandPositioningChartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: ['팬틴', '헤드앤숄더', '허벌 에센스', '헤어 레시피', '리조이스'],
+                    datasets: [{
+                        label: '주요 포커스',
+                        data: [90, 95, 80, 75, 70],
+                        backgroundColor: [
+                            'rgba(217, 119, 6, 0.6)',
+                            'rgba(14, 165, 233, 0.6)',
+                            'rgba(22, 163, 74, 0.6)',
+                            'rgba(249, 115, 22, 0.6)',
+                            'rgba(236, 72, 153, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(217, 119, 6, 1)',
+                            'rgba(14, 165, 233, 1)',
+                            'rgba(22, 163, 74, 1)',
+                            'rgba(249, 115, 22, 1)',
+                            'rgba(236, 72, 153, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const focusMap = {
+                                        '팬틴': '손상 케어',
+                                        '헤드앤숄더': '두피 건강',
+                                        '허벌 에센스': '자연 유래',
+                                        '헤어 레시피': '영양 공급',
+                                        '리조이스': '부드러움'
+                                    };
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += focusMap[context.label];
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: { ticks: { font: { size: 14 } } }
+                    }
+                }
+            });
+            
+            const panteneContent = document.getElementById('pantene-content');
+            const panteneTabs = document.querySelectorAll('.product-tab-btn');
+
+            function updatePanteneContent(target) {
+                const contentData = data.pantene[target];
+                panteneContent.innerHTML = `
+                    <div class="text-center p-4">
+                        <span class="text-4xl">${contentData.icon}</span>
+                        <h4 class="text-xl font-bold my-2">${contentData.title}</h4>
+                        <p class="text-gray-600 max-w-md mx-auto">${contentData.desc}</p>
+                    </div>
+                `;
+                panteneTabs.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.target === target);
+                    btn.classList.toggle('text-amber-600', btn.dataset.target === target);
+                    btn.classList.toggle('border-amber-500', btn.dataset.target === target);
+                    btn.classList.toggle('text-gray-500', btn.dataset.target !== target);
+                });
+            }
+            
+            panteneTabs.forEach(tab => {
+                tab.addEventListener('click', () => updatePanteneContent(tab.dataset.target));
+            });
+
+            updatePanteneContent('pantene-damage');
+
+            const headShouldersChart = new Chart(document.getElementById('headShouldersChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['피록톤올아민 함량', '두피 진정', '가려움 완화', '유분 컨트롤', '쿨링 효과'],
+                    datasets: [{
+                        label: '가려운 두피 케어',
+                        data: [8, 9, 9, 5, 4],
+                        backgroundColor: 'rgba(56, 189, 248, 0.2)',
+                        borderColor: 'rgba(56, 189, 248, 1)',
+                        borderWidth: 2
+                    }, {
+                        label: '오일 컨트롤',
+                        data: [8, 5, 6, 9, 8],
+                        backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            onClick: (e, legendItem, legend) => {
+                                const descEl = document.getElementById('head-shoulders-desc');
+                                const desc = data.headShoulders[legendItem.text];
+                                if (desc) {
+                                     descEl.innerHTML = `<h4 class="font-bold text-lg mb-1">${legendItem.text}</h4><p>${desc}</p>`;
+                                }
+                                Chart.defaults.plugins.legend.onClick(e, legendItem, legend);
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                            pointLabels: { font: { size: 12 } },
+                            suggestedMin: 0,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
