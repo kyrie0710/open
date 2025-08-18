@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-뷰티 주간 트렌드 리포트 (2025년 8월 12일 ~ 18일)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .kpi-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .flow-chart-node {
+            background-color: #118AB2;
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 9999px;
+            text-align: center;
+            font-weight: 500;
+            min-width: 120px;
+        }
+        .flow-chart-connector {
+            flex-grow: 1;
+            height: 2px;
+            background-color: #118AB2;
+        }
+        .flow-chart-arrow::after {
+            content: '►';
+            color: #118AB2;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#073B4C] mb-2">K-뷰티 위클리 트렌드 리포트</h1>
+            <p class="text-lg text-[#118AB2] font-medium">2025년 8월 12일 – 8월 18일</p>
+        </header>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#073B4C]">이번 주 핵심 동향 요약</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="kpi-card border-l-4 border-[#FF6B6B]">
+                    <p class="text-4xl font-bold text-[#FF6B6B]">111%</p>
+                    <h3 class="font-semibold mt-2 text-gray-700">APR 2분기 매출 성장률</h3>
+                    <p class="text-sm text-gray-500 mt-1">뷰티 디바이스와 D2C 전략이 성장을 견인하며 K-뷰티 시가총액 1위에 등극했습니다.</p>
+                </div>
+                <div class="kpi-card border-l-4 border-[#FFD166]">
+                    <p class="text-4xl font-bold text-[#FFD166]">₩6,236억</p>
+                    <h3 class="font-semibold mt-2 text-gray-700">코스맥스 2분기 매출</h3>
+                    <p class="text-sm text-gray-500 mt-1">사상 최대 분기 실적을 기록했으나, 시장의 신중한 반응으로 주가는 하락했습니다.</p>
+                </div>
+                <div class="kpi-card border-l-4 border-[#06D6A0]">
+                    <p class="text-4xl font-bold text-[#06D6A0]">1,100억</p>
+                    <h3 class="font-semibold mt-2 text-gray-700">7월 K-뷰티 대미 수출액</h3>
+                    <p class="text-sm text-gray-500 mt-1">미국향 스킨케어 수출이 중국을 넘어서며 주요 시장 다변화에 성공했습니다.</p>
+                </div>
+                <div class="kpi-card border-l-4 border-[#118AB2]">
+                    <p class="text-4xl font-bold text-[#118AB2]">AI & 바이오</p>
+                    <h3 class="font-semibold mt-2 text-gray-700">핵심 혁신 동력</h3>
+                    <p class="text-sm text-gray-500 mt-1">엑소좀 등 첨단 성분과 AI 기반 초개인화 기술이 산업의 미래를 주도하고 있습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16 bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#073B4C]">K-뷰티 시장의 판도 변화: APR의 부상</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-[#118AB2]">APR 시가총액 추이 (2025년)</h3>
+                    <p class="text-gray-600 mb-4">APR은 혁신적인 뷰티 디바이스와 공격적인 D2C 전략을 바탕으로 폭발적인 성장을 기록했습니다. 연초 대비 주가가 352% 상승하며 아모레퍼시픽을 제치고 K-뷰티 대장주 자리에 올랐습니다. 이는 기술 기반의 새로운 비즈니스 모델이 전통 강자를 위협하고 있음을 보여줍니다.</p>
+                    <div class="text-center bg-slate-100 p-4 rounded-lg">
+                        <p class="text-lg font-medium text-gray-700">2025년 8월 16일 시가총액</p>
+                        <p class="text-5xl font-extrabold text-[#FF6B6B] mt-2">₩8조+</p>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="aprMarketCapChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#073B4C]">ODM 기업: 성장과 우려의 교차점</h2>
+             <p class="max-w-3xl mx-auto text-center text-gray-600 mb-8">K-뷰티 ODM 기업들은 인디 브랜드의 폭발적인 성장과 글로벌 수요에 힘입어 사상 최대 실적을 달성했습니다. 하지만 미국 법인 적자, 관세 우려 등은 투자 심리에 부담으로 작용하며 성장 지속 가능성에 대한 질문을 던지고 있습니다.</p>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold mb-4 text-center text-[#118AB2]">주요 ODM 기업 2분기 실적 비교</h3>
+                <div class="chart-container h-96 max-h-[450px]">
+                    <canvas id="odmRevenueChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#073B4C]">글로벌 시장 재편: K-뷰티 수출 지형도 변화</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                 <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-[#118AB2]">주요 수출 시장 비교 (2025년 7월)</h3>
+                    <p class="text-gray-600 mb-4">K-뷰티 산업은 성공적으로 시장 다변화를 이루어내고 있습니다. 7월 스킨케어 부문에서 미국 수출액이 처음으로 중국을 추월한 것은 역사적인 전환점입니다. 이는 중국 시장 의존도를 낮추고 북미와 동남아에서 새로운 성장 동력을 확보했음을 의미합니다.</p>
+                    <div class="chart-container h-80">
+                         <canvas id="exportMarketChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-[#118AB2]">글로벌 확장 핵심 동력</h3>
+                     <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-2xl text-[#06D6A0] mr-3">🚀</span>
+                            <div>
+                                <h4 class="font-semibold">시장 다변화 성공</h4>
+                                <p class="text-gray-600 text-sm">북미, 동남아시아 시장에서 K-뷰티의 인기가 급증하며 새로운 성장축을 형성했습니다.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                             <span class="text-2xl text-[#FFD166] mr-3">🔬</span>
+                            <div>
+                                <h4 class="font-semibold">혁신적 제품력</h4>
+                                <p class="text-gray-600 text-sm">마스크팩, 선케어 등 특정 카테고리의 제품 우수성이 글로벌 소비자들에게 인정받았습니다.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                             <span class="text-2xl text-[#FF6B6B] mr-3">💡</span>
+                            <div>
+                                <h4 class="font-semibold">인디 브랜드의 약진</h4>
+                                <p class="text-gray-600 text-sm">빠르고 트렌디한 인디 브랜드들이 ODM 기업을 통해 글로벌 시장에 진출하며 K-뷰티의 저변을 확대하고 있습니다.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16 bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#073B4C]">미래를 여는 기술: AI와 바이오 혁신</h2>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-8">뷰티 산업의 미래는 기술 혁신에 달려있습니다. AI를 통한 초개인화 솔루션과 엑소좀과 같은 첨단 바이오 성분은 제품의 효능을 극대화하고 소비자 경험을 완전히 바꾸고 있습니다.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="text-center p-6 bg-slate-50 rounded-lg">
+                    <p class="text-6xl mb-4">🧬</p>
+                    <h3 class="text-xl font-bold text-[#118AB2]">첨단 바이오 성분: 엑소좀</h3>
+                    <p class="text-gray-600 mt-2">우유, 병풀 등에서 유래한 엑소좀이 피부 재생 및 안티에이징의 핵심 성분으로 부상했습니다. 과학적 검증을 거친 고효능 성분에 대한 소비자 수요가 증가하고 있습니다.</p>
+                </div>
+                <div class="text-center p-6 bg-slate-50 rounded-lg">
+                    <p class="text-6xl mb-4">🤖</p>
+                    <h3 class="text-xl font-bold text-[#06D6A0]">AI 기반 초개인화</h3>
+                    <p class="text-gray-600 mt-2">AI 피부 분석을 통해 개인에게 최적화된 맞춤형 화장품을 추천하고, 제형을 개발하는 시대가 열렸습니다. 데이터가 뷰티의 새로운 언어가 되고 있습니다.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#073B4C]">성장을 위한 협력: 개방형 혁신 생태계</h2>
+            <p class="max-w-3xl mx-auto text-center text-gray-600 mb-8">더 이상 단독으로 모든 것을 해결할 수 없습니다. 뷰티 대기업, 바이오테크 스타트업, 학계가 손을 잡고 R&D 혁신을 가속화하고 인재를 양성하는 개방형 생태계가 구축되고 있습니다.</p>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                 <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="flow-chart-node">뷰티 기업<br>(로레알)</div>
+                    <div class="flex items-center w-full md:w-auto">
+                        <div class="flow-chart-connector"></div>
+                        <div class="flow-chart-arrow"></div>
+                    </div>
+                    <div class="flow-chart-node bg-[#06D6A0]">바이오테크<br>(올릭스)</div>
+                    <div class="flex items-center w-full md:w-auto">
+                        <div class="flow-chart-connector"></div>
+                        <div class="flow-chart-arrow"></div>
+                    </div>
+                     <div class="flow-chart-node bg-[#FFD166] text-[#073B4C]">학계<br>(한양여대)</div>
+                </div>
+                <p class="text-center mt-6 text-gray-700 font-medium">R&D, 인재 양성, 시장 진출을 위한 전략적 파트너십</p>
+            </div>
+        </section>
+
+        <footer class="text-center pt-8 border-t border-gray-300">
+            <p class="text-gray-500">본 리포트는 제공된 데이터를 기반으로 작성된 시각화 자료입니다.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) return label;
+            
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            words.forEach(word => {
+                if ((currentLine + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            });
+            lines.push(currentLine.trim());
+            return lines.filter(line => line.length > 0);
+        };
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: {
+                            family: "'Noto Sans KR', sans-serif",
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    bodyFont: {
+                        family: "'Noto Sans KR', sans-serif"
+                    },
+                    titleFont: {
+                        family: "'Noto Sans KR', sans-serif"
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        font: {
+                           family: "'Noto Sans KR', sans-serif"
+                        }
+                    }
+                },
+                y: {
+                    ticks: {
+                        font: {
+                           family: "'Noto Sans KR', sans-serif"
+                        }
+                    }
+                }
+            }
+        };
+
+        const energeticPlayfulPalette = {
+            red: '#FF6B6B',
+            yellow: '#FFD166',
+            green: '#06D6A0',
+            blue: '#118AB2',
+            darkBlue: '#073B4C'
+        };
+        
+        const aprMarketCapCtx = document.getElementById('aprMarketCapChart').getContext('2d');
+        new Chart(aprMarketCapCtx, {
+            type: 'line',
+            data: {
+                labels: ['1월', '3월', '5월', '7월', '8월'],
+                datasets: [{
+                    label: 'APR 시가총액 (조 원)',
+                    data: [1.8, 3.5, 5.2, 7.1, 8.0],
+                    borderColor: energeticPlayfulPalette.red,
+                    backgroundColor: 'rgba(255, 107, 107, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '조 원'
+                        }
+                    }
+                }
+            }
+        });
+
+        const odmRevenueCtx = document.getElementById('odmRevenueChart').getContext('2d');
+        new Chart(odmRevenueCtx, {
+            type: 'bar',
+            data: {
+                labels: ['코스맥스', '한국콜마'],
+                datasets: [{
+                    label: '2분기 매출 (억 원)',
+                    data: [6236, 5337],
+                    backgroundColor: [energeticPlayfulPalette.blue, energeticPlayfulPalette.green],
+                    borderColor: [energeticPlayfulPalette.darkBlue, energeticPlayfulPalette.darkBlue],
+                    borderWidth: 1
+                }, {
+                    label: '2분기 영업이익 (억 원)',
+                    data: [608, 410],
+                    backgroundColor: [energeticPlayfulPalette.yellow, energeticPlayfulPalette.red],
+                    borderColor: [energeticPlayfulPalette.darkBlue, energeticPlayfulPalette.darkBlue],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                indexAxis: 'x',
+                 scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '억 원'
+                        }
+                    }
+                }
+            }
+        });
+
+        const exportMarketCtx = document.getElementById('exportMarketChart').getContext('2d');
+        new Chart(exportMarketCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['미국', '중국', '동남아', '기타'],
+                datasets: [{
+                    label: '수출 비중',
+                    data: [1100, 1050, 800, 650],
+                    backgroundColor: [
+                        energeticPlayfulPalette.blue,
+                        energeticPlayfulPalette.red,
+                        energeticPlayfulPalette.green,
+                        energeticPlayfulPalette.yellow
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                plugins: {
+                    ...commonChartOptions.plugins,
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
