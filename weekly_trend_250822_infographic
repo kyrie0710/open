@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주간 뷰티 & 바이오 시장 동향 대시보드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Muted Teal -->
+    <!-- Application Structure Plan: A thematic, non-linear dashboard structure was chosen over a linear report format to enhance user engagement and exploration. The application is divided into logical sections (Market Landscape, Innovation, Science, Key Players) accessible via a sticky navigation bar. This allows users to jump directly to topics of interest. Key interactions include an interactive market cap comparison chart to visualize the main story, tabbed content to condense large text blocks, and a filterable grid for company activities, transforming a static table into an exploratory tool. This design prioritizes usability by breaking down complex information into digestible, interactive modules, facilitating a quicker and deeper understanding of the report's key insights. -->
+    <!-- Visualization & Content Choices: 1. Market Cap Comparison (Goal: Compare) -> Bar Chart (Chart.js) -> Interaction: Hover tooltips. Justification: Visually demonstrates the report's central theme of a market power shift. 2. Company Profiles (Goal: Organize) -> Tabbed Interface (HTML/JS) -> Interaction: Click to reveal content. Justification: Manages large amounts of text efficiently, preventing cognitive overload. 3. Key Player Activities (Goal: Organize/Explore) -> Filterable Grid (HTML/JS) -> Interaction: Button clicks to filter data. Justification: Transforms a dense data matrix into an interactive tool for user-driven analysis. 4. Science Concepts (Goal: Inform) -> Styled HTML Diagram (HTML/CSS) -> Interaction: Hover effects. Justification: Simplifies a complex biological relationship (Exosome/miRNA) without using prohibited SVG/Mermaid, making it more approachable. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 45vh;
+            max-height: 450px;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #14B8A6;
+            border-bottom-color: #14B8A6;
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: #14B8A6;
+            color: white;
+        }
+        .filter-button {
+            transition: all 0.3s ease;
+        }
+        .filter-button.active {
+            background-color: #0F766E;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .content-section {
+            scroll-margin-top: 80px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-gray-800">주간 뷰티 동향 리포트</h1>
+            <div class="hidden md:flex space-x-8">
+                <a data-target="home" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">홈</a>
+                <a data-target="market" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">시장 지형</a>
+                <a data-target="innovation" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">혁신 스포트라이트</a>
+                <a data-target="science" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">과학의 최전선</a>
+                <a data-target="players" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">주요 기업 동향</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5">
+                    <option value="home">홈</option>
+                    <option value="market">시장 지형</option>
+                    <option value="innovation">혁신 스포트라이트</option>
+                    <option value="science">과학의 최전선</option>
+                    <option value="players">주요 기업 동향</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+
+        <section id="home" class="text-center content-section">
+            <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-4">K-뷰티 지각변동: 기술이 전통을 넘어서다</h2>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10">이번 주 글로벌 뷰티 시장은 기술 기반 신흥 브랜드가 전통 강자를 위협하며 산업의 성공 공식이 근본적으로 재편되고 있음을 보여줍니다. 뷰티 디바이스와 D2C 모델을 앞세운 APR의 부상은 이러한 패러다임 전환의 정점에 있습니다.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200/50">
+                    <h3 class="text-4xl font-bold text-teal-600">1위</h3>
+                    <p class="text-gray-500 mt-2">APR, K-뷰티 시총 1위 등극</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200/50">
+                    <h3 class="text-4xl font-bold text-teal-600">1조원+</h3>
+                    <p class="text-gray-500 mt-2">코스맥스 & 한국콜마 상반기 매출</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200/50">
+                    <h3 class="text-4xl font-bold text-teal-600">GMP</h3>
+                    <p class="text-gray-500 mt-2">코스맥스, MD크림 의료기기 인증</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200/50">
+                    <h3 class="text-4xl font-bold text-teal-600">15%</h3>
+                    <p class="text-gray-500 mt-2">미국, K-뷰티 상호관세 부과</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="market" class="mt-16 md:mt-24 content-section">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">시장 지형: 새로운 강자의 등장과 거인들의 도전</h2>
+            <p class="text-lg text-center text-gray-600 max-w-3xl mx-auto mb-12">이번 주는 기술 기반 신흥 강자가 전통의 강자를 위협하고, 글로벌 기업들이 새로운 경쟁 구도에 적응하기 위해 전략을 재편하는 역동적인 모습을 보였습니다. 특히 K-뷰티 내 권력 이동과 이를 뒷받침하는 ODM 생태계의 명암이 뚜렷하게 드러났습니다.</p>
+            
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-200/50 mb-12">
+                <h3 class="text-xl font-bold text-center text-gray-700 mb-4">K-뷰티 주요 기업 시가총액 비교</h3>
+                <div class="chart-container">
+                    <canvas id="marketCapChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-200/50">
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                    <button class="tab-button px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-medium active" data-tab="new-leaders">새로운 강자</button>
+                    <button class="tab-button px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-medium" data-tab="incumbents">기로에 선 거인들</button>
+                    <button class="tab-button px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-medium" data-tab="mncs">글로벌 MNC</button>
+                    <button class="tab-button px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-medium" data-tab="odm">ODM 엔진룸</button>
+                </div>
+                <div id="tab-content" class="text-gray-700 leading-relaxed">
+                </div>
+            </div>
+        </section>
+
+        <section id="innovation" class="mt-16 md:mt-24 content-section">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">혁신 스포트라이트: 기술이 뷰티를 재정의하다</h2>
+            <p class="text-lg text-center text-gray-600 max-w-3xl mx-auto mb-12">이번 주 산업 동향은 기술이 뷰티 경험을 재정의하고 있음을 명확히 보여줍니다. 특히 홈 뷰티 디바이스, AI 기반 개인화, 그리고 의료기기 수준의 코스메슈티컬 제품 개발은 미래 시장의 핵심 경쟁 영역으로 부상하고 있습니다.</p>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200/50 text-center">
+                    <div class="text-4xl mb-4">📱</div>
+                    <h3 class="text-xl font-bold mb-2">디바이스 주도 생태계</h3>
+                    <p class="text-gray-600">APR의 '하이포커스샷'과 같이 전문 클리닉 수준의 기술을 가정으로 가져온 홈 뷰티 디바이스가 시장을 선도하고 있습니다. LG생활건강 역시 '프라엘'을 통해 디바이스와 화장품을 결합한 시너지 생태계 구축에 나서며 경쟁이 심화되고 있습니다.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200/50 text-center">
+                    <div class="text-4xl mb-4">💡</div>
+                    <h3 class="text-xl font-bold mb-2">AI 기반 초개인화</h3>
+                    <p class="text-gray-600">AI는 더 이상 추상적 개념이 아닌 핵심 비즈니스 도구입니다. 롯데온 '트위즈', 스킨랩코리아 'BASUP' 등은 AI를 활용해 고객 취향과 피부 타입을 분석하여 제품을 추천하고, 맞춤형 화장품 처방까지 관여하며 새로운 차원의 개인화를 실현하고 있습니다.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200/50 text-center">
+                    <div class="text-4xl mb-4">🔬</div>
+                    <h3 class="text-xl font-bold mb-2">코스메슈티컬의 진화</h3>
+                    <p class="text-gray-600">코스맥스가 MD크림으로 의료기기 GMP 인증을 획득한 것은 업계의 판도를 바꿀 중대한 사건입니다. 스킨케어 제품이 '의료기기'로 분류됨으로써, 일반 화장품을 뛰어넘는 강력한 효능을 주장할 수 있게 되어 뷰티와 의료의 경계가 허물어지고 있습니다.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="science" class="mt-16 md:mt-24 content-section">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">과학의 최전선: 차세대 바이오 소재 혁신</h2>
+            <p class="text-lg text-center text-gray-600 max-w-3xl mx-auto mb-12">뷰티 산업의 미래는 기초 과학의 발전에 달려 있습니다. 이번 주 동향은 엑소좀, RNA와 같은 차세대 바이오 소재 연구가 활발히 진행되며, 이것이 어떻게 제품 효능의 패러다임을 바꾸고 있는지 보여줍니다.</p>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200/50">
+                    <h3 class="text-2xl font-bold mb-4">엑소좀 혁명: 차세대 바이오 액티브</h3>
+                    <p class="text-gray-600 mb-6">엑소좀은 유효 성분을 표적 세포에 효과적으로 전달하는 능력 덕분에 차세대 스킨케어 플랫폼 기술로 급부상하고 있습니다. 지에프씨생명과학, 엠디뮨 등은 식물 유래 엑소좀을 개발하며 프리미엄 안티에이징 시장을 공략하고 있으며, 이는 K-뷰티의 기술적 차별화 포인트로 작용하고 있습니다.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200/50">
+                    <h3 class="text-2xl font-bold mb-4">RNA & miRNA: 유전자 수준의 정밀 타겟팅</h3>
+                    <p class="text-gray-600 mb-6">RNA와 miRNA를 직접적인 활성 성분으로 활용하려는 움직임이 본격화되고 있습니다. 로레알-올릭스의 공동 연구, 지에프씨생명과학의 특허받은 miRNA408 등은 특정 생물학적 경로를 정밀하게 타겟팅하는 시대로의 전환을 의미하며, '성분 IP' 경쟁을 촉발하고 있습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="players" class="mt-16 md:mt-24 content-section">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">주요 기업 동향 대시보드</h2>
+            <p class="text-lg text-center text-gray-600 max-w-3xl mx-auto mb-12">이번 주 주요 기업들의 활동을 필터링하여 살펴보세요. 각 기업의 전략적 우선순위와 시장 내 경쟁 구도를 한눈에 파악할 수 있습니다.</p>
+            
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-200/50">
+                <div class="mb-8">
+                    <h4 class="font-bold mb-3 text-gray-700">기업별 필터:</h4>
+                    <div id="company-filters" class="flex flex-wrap gap-2">
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-3 text-gray-700">활동 유형별 필터:</h4>
+                    <div id="category-filters" class="flex flex-wrap gap-2">
+                    </div>
+                </div>
+
+                <div id="player-grid" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-16 md:mt-24">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>주간 뷰티 & 바이오 시장 동향 리포트 (2025년 8월 18일 주)</p>
+            <p class="text-sm text-gray-400 mt-2">이 애플리케이션은 제공된 데이터를 기반으로 생성된 대화형 요약입니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const appData = {
+                marketCap: {
+                    labels: ['APR', '아모레퍼시픽', 'LG생활건강', '코스맥스', '한국콜마'],
+                    data: [8.5, 7.8, 7.5, 2.1, 1.8] 
+                },
+                tabContent: {
+                    'new-leaders': {
+                        title: '새로운 강자: 에이피알(APR)',
+                        content: "D2C 전략과 '메디큐브 에이지알' 뷰티 디바이스의 성공을 결합하여 K-뷰티 시가총액 1위 기업으로 등극했습니다. 이는 전통적인 유통 채널을 우회하고 고객과의 직접적인 관계를 구축하며 가치 사슬을 혁신한 결과입니다. 2분기 매출과 영업이익이 각각 111%, 202% 급증하며 역대 최대 실적을 기록, 비즈니스 모델의 파괴력을 입증했습니다."
+                    },
+                    'incumbents': {
+                        title: '기로에 선 거인들: 아모레퍼시픽과 LG생활건강',
+                        content: "전통적인 강자들은 중대한 도전에 직면해 있습니다. 아모레퍼시픽은 브랜드 평판 1위를 유지했으나 시총 1위 자리를 내주었고, LG생활건강은 중국 시장 부진으로 어려움을 겪고 있습니다. 양사 모두 AI 스타트업 투자(아모레), 프리미엄 탈모케어 시장 진출(LG) 등 혁신을 통해 돌파구를 모색하고 있습니다."
+                    },
+                    'mncs': {
+                        title: '글로벌 MNC의 전략적 플레이: 로레알과 에스티로더',
+                        content: "글로벌 MNC들은 시장 변화에 적극적으로 대응하고 있습니다. 로레알은 RNA 기술 확보(올릭스 협력), M&A(타카미 인수) 등 다각적인 전략을 구사하고 있으며, 에스티로더는 새로운 CEO 지휘 아래 공급망 파트너와의 협력을 강화하며 조직 쇄신을 모색하고 있습니다."
+                    },
+                    'odm': {
+                        title: 'ODM 엔진룸: 코스맥스와 한국콜마',
+                        content: "K-뷰티의 글로벌 성공은 세계적인 ODM 기업들의 역량에 기반합니다. 양사는 인디 브랜드의 폭발적인 성장에 힘입어 상반기 매출 1조 원을 돌파하며 사상 최대 실적을 기록했습니다. 그러나 기록적 실적에도 불구, 시장 기대치 미달과 미국 법인 수익성 문제, 관세 부담 등으로 주가는 하락하는 등 복합적인 과제에 직면해 있습니다."
+                    }
+                },
+                playerActivities: [
+                    { company: '로레알', category: 'M&A/투자', summary: "'타카미' 인수" },
+                    { company: '로레알', category: 'R&D/혁신', summary: "올릭스와 RNA 공동연구" },
+                    { company: '로레알', category: '파트너십/협업', summary: "한양여대와 산학협력" },
+                    { company: '에스티로더', category: '리더십/조직', summary: "신규 리더십 임명 및 조직 쇄신" },
+                    { company: '에스티로더', category: '파트너십/협업', summary: "인터코스와 파트너십 강화" },
+                    { company: 'APR', category: '재무/실적', summary: "2분기 역대 최대 실적, 시총 1위 등극" },
+                    { company: 'APR', category: 'R&D/혁신', summary: "'하이포커스샷' HIFU 디바이스 개발" },
+                    { company: '아모레퍼시픽', category: 'M&A/투자', summary: "AI 탈모케어 스타트업 '리필드'에 투자" },
+                    { company: 'LG생활건강', category: '시장 확장', summary: "'더후' 통해 헤어케어 시장 진출" },
+                    { company: 'LG생활건강', category: '신제품/서비스', summary: "'어반버스터즈' 건기식 출시" },
+                    { company: '코스맥스', category: '규제/법률', summary: "MD크림, 의료기기 GMP 획득" },
+                    { company: '코스맥스', category: '파트너십/협업', summary: "하버드 의대와 공동연구" },
+                    { company: '코스맥스', category: '재무/실적', summary: "분기 매출 6,000억 돌파" },
+                    { company: '한국콜마', category: '재무/실적', summary: "상반기 매출 1조 돌파" },
+                    { company: '한국콜마', category: '규제/법률', summary: "경영권 분쟁 발생" },
+                    { company: '지에프씨생명과학', category: 'R&D/혁신', summary: "동백나무 유래 miRNA408 기전 규명" },
+                    { company: '식약처', category: '규제/법률', summary: "'화장품의 날' 법정기념일 지정" },
+                    { company: '식약처', category: '규제/법률', summary: "천연/유기농 인증제도 개편" },
+                ]
+            };
+
+            const companies = ['전체', ...new Set(appData.playerActivities.map(item => item.company))];
+            const categories = ['전체', ...new Set(appData.playerActivities.map(item => item.category))];
+            let activeCompanyFilter = '전체';
+            let activeCategoryFilter = '전체';
+
+            function initMarketCapChart() {
+                const ctx = document.getElementById('marketCapChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: appData.marketCap.labels,
+                        datasets: [{
+                            label: '시가총액 (조원)',
+                            data: appData.marketCap.data,
+                            backgroundColor: [
+                                'rgba(20, 184, 166, 0.7)',
+                                'rgba(107, 114, 128, 0.7)',
+                                'rgba(107, 114, 128, 0.7)',
+                                'rgba(156, 163, 175, 0.7)',
+                                'rgba(156, 163, 175, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(13, 148, 136, 1)',
+                                'rgba(75, 85, 99, 1)',
+                                'rgba(75, 85, 99, 1)',
+                                'rgba(107, 114, 128, 1)',
+                                'rgba(107, 114, 128, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${context.raw}조원`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '시가총액 (조원)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function updateTabContent(tabId) {
+                const data = appData.tabContent[tabId];
+                const contentEl = document.getElementById('tab-content');
+                contentEl.innerHTML = `
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">${data.title}</h3>
+                    <p>${data.content}</p>
+                `;
+            }
+
+            function setupTabs() {
+                const tabButtons = document.querySelectorAll('.tab-button');
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        updateTabContent(button.dataset.tab);
+                    });
+                });
+                updateTabContent('new-leaders');
+            }
+
+            function renderFilterButtons() {
+                const companyFiltersEl = document.getElementById('company-filters');
+                companyFiltersEl.innerHTML = companies.map(company => 
+                    `<button class="filter-button px-3 py-1.5 text-sm rounded-full bg-gray-100 text-gray-600 font-medium ${company === '전체' ? 'active' : ''}" data-filter-type="company" data-filter-value="${company}">${company}</button>`
+                ).join('');
+
+                const categoryFiltersEl = document.getElementById('category-filters');
+                categoryFiltersEl.innerHTML = categories.map(category => 
+                    `<button class="filter-button px-3 py-1.5 text-sm rounded-full bg-gray-100 text-gray-600 font-medium ${category === '전체' ? 'active' : ''}" data-filter-type="category" data-filter-value="${category}">${category}</button>`
+                ).join('');
+            }
+
+            function renderPlayerGrid() {
+                const gridEl = document.getElementById('player-grid');
+                const filteredData = appData.playerActivities.filter(item => {
+                    const companyMatch = activeCompanyFilter === '전체' || item.company === activeCompanyFilter;
+                    const categoryMatch = activeCategoryFilter === '전체' || item.category === activeCategoryFilter;
+                    return companyMatch && categoryMatch;
+                });
+
+                if (filteredData.length === 0) {
+                    gridEl.innerHTML = `<p class="text-gray-500 col-span-full text-center">선택한 조건에 해당하는 활동이 없습니다.</p>`;
+                    return;
+                }
+
+                gridEl.innerHTML = filteredData.map(item => `
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200/80">
+                        <p class="font-bold text-teal-700">${item.company}</p>
+                        <p class="text-sm text-gray-500 mb-2">${item.category}</p>
+                        <p class="text-gray-800">${item.summary}</p>
+                    </div>
+                `).join('');
+            }
+            
+            function setupFilters() {
+                document.addEventListener('click', (e) => {
+                    if (e.target.matches('.filter-button')) {
+                        const type = e.target.dataset.filterType;
+                        const value = e.target.dataset.filterValue;
+
+                        document.querySelectorAll(`.filter-button[data-filter-type="${type}"]`).forEach(btn => btn.classList.remove('active'));
+                        e.target.classList.add('active');
+
+                        if (type === 'company') {
+                            activeCompanyFilter = value;
+                        } else if (type === 'category') {
+                            activeCategoryFilter = value;
+                        }
+                        renderPlayerGrid();
+                    }
+                });
+            }
+
+            function setupNavigation() {
+                const links = document.querySelectorAll('.nav-link');
+                const sections = document.querySelectorAll('.content-section');
+                const mobileNav = document.getElementById('mobile-nav');
+
+                function setActiveLink(targetId) {
+                    links.forEach(link => {
+                        link.classList.toggle('active', link.dataset.target === targetId);
+                    });
+                    if (mobileNav.value !== targetId) {
+                        mobileNav.value = targetId;
+                    }
+                }
+
+                function scrollToSection(targetId) {
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+
+                links.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = e.target.dataset.target;
+                        scrollToSection(targetId);
+                    });
+                });
+
+                mobileNav.addEventListener('change', (e) => {
+                    scrollToSection(e.target.value);
+                });
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            setActiveLink(entry.target.id);
+                        }
+                    });
+                }, { rootMargin: '-50% 0px -50% 0px' });
+
+                sections.forEach(section => observer.observe(section));
+                setActiveLink('home');
+            }
+
+            initMarketCapChart();
+            setupTabs();
+            renderFilterButtons();
+            renderPlayerGrid();
+            setupFilters();
+            setupNavigation();
+        });
+    </script>
+</body>
+</html>
