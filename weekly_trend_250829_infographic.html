@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글로벌 뷰티 & 과학 동향 인포그래픽 | 2025년 8월</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0d1a2e;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .stat-card h3 {
+            color: #FFA600;
+        }
+        .flowchart-arrow {
+            font-size: 2rem;
+            color: #FF6361;
+            line-height: 1;
+        }
+        .kpi-value {
+            font-weight: 900;
+            color: #FF6361;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12 text-white">
+            <h1 class="text-4xl md:text-5xl font-black mb-2" style="color: #FFA600;">글로벌 뷰티 & 과학 인텔리전스</h1>
+            <p class="text-lg text-gray-300">2025년 8월 3주차 핵심 동향 요약</p>
+        </header>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-white">시장을 재편하는 3대 핵심 동력</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl p-6 text-center text-white border border-white/20">
+                    <div class="text-5xl mb-4">💻</div>
+                    <h3 class="text-2xl font-bold mb-2 text-amber-400">기술 통합</h3>
+                    <p class="text-gray-300">AI 기반 개인화 진단 기기가 소비자와의 상호작용을 근본적으로 바꾸고 있습니다. 데이터는 새로운 효능의 척도가 됩니다.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl p-6 text-center text-white border border-white/20">
+                    <div class="text-5xl mb-4">🌍</div>
+                    <h3 class="text-2xl font-bold mb-2 text-amber-400">지정학적 민첩성</h3>
+                    <p class="text-gray-300">무역 장벽과 신흥 시장의 부상은 공급망 다각화와 현지화 전략을 필수 과제로 만들고 있습니다.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl p-6 text-center text-white border border-white/20">
+                    <div class="text-5xl mb-4">🔬</div>
+                    <h3 class="text-2xl font-bold mb-2 text-amber-400">바이오 과학 우위</h3>
+                    <p class="text-gray-300">엑소좀, NMN 등 첨단 성분이 스킨케어의 '의료화'를 가속화하며 효능의 새로운 기준을 제시합니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-white">기술 혁신: 뷰티테크 경쟁 구도</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold mb-4 text-center">주요 기업 2분기 실적 성장률 비교</h3>
+                    <p class="text-center text-gray-600 mb-4">디바이스 중심의 APR이 경이로운 성장을 기록한 반면, 전통 강자들은 상반된 실적을 보였습니다.</p>
+                    <div class="chart-container">
+                        <canvas id="q2PerformanceChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col justify-center items-center">
+                    <h3 class="text-xl font-bold mb-4 text-center">새로운 패러다임: 진단 플라이휠</h3>
+                    <p class="text-center text-gray-600 mb-6">로레알의 '셀 바이오프린트'와 같은 기기는 '진단 → 맞춤 추천 → 효능 검증'의 선순환을 만들어냅니다. 이는 소비자의 구매 여정을 데이터 기반으로 전환시킵니다.</p>
+                    <div class="w-full max-w-md">
+                        <div class="flex flex-col items-center space-y-2">
+                            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg w-full text-center shadow">
+                                <span class="font-bold">1. 피부 진단</span> (가정용 디바이스)
+                            </div>
+                            <div class="flowchart-arrow">▼</div>
+                            <div class="bg-purple-100 border-l-4 border-purple-500 text-purple-700 p-4 rounded-lg w-full text-center shadow">
+                                <span class="font-bold">2. 개인 맞춤형 제품 추천</span> (AI 알고리즘)
+                            </div>
+                            <div class="flowchart-arrow">▼</div>
+                            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg w-full text-center shadow">
+                                <span class="font-bold">3. 효능 검증 및 재측정</span> (데이터로 확인)
+                            </div>
+                             <div class="flowchart-arrow">▼</div>
+                            <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-700 p-4 rounded-lg w-full text-center shadow">
+                                <span class="font-bold">4. 신뢰 기반 재구매</span> (충성도 강화)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-white">글로벌 시장 재편: 기회와 위기</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="stat-card bg-white rounded-lg shadow-md p-6 text-center flex flex-col justify-center">
+                    <h3 class="text-xl font-bold mb-2">인도 럭셔리 뷰티 시장</h3>
+                    <p class="text-5xl kpi-value">5x</p>
+                    <p class="text-gray-600 mt-2">2035년까지 5배 성장 예상, 글로벌 뷰티의 마지막 성장 엔진으로 부상.</p>
+                </div>
+                <div class="stat-card bg-white rounded-lg shadow-md p-6 text-center flex flex-col justify-center">
+                    <h3 class="text-xl font-bold mb-2">美, K-뷰티 관세 부과</h3>
+                    <p class="text-5xl kpi-value">15%</p>
+                    <p class="text-gray-600 mt-2">'가성비' 강점을 위협, 현지 생산 등 공급망 재편을 가속화하는 촉매제.</p>
+                </div>
+                 <div class="stat-card bg-white rounded-lg shadow-md p-6 text-center flex flex-col justify-center">
+                    <h3 class="text-xl font-bold mb-2">ODM 기업 호황</h3>
+                    <p class="text-5xl kpi-value">3조+</p>
+                    <p class="text-gray-600 mt-2">코스맥스, 한국콜마 상반기 합산 매출 3조원 돌파. 글로벌 K-뷰티 수요 증명.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-8 text-white">바이오 혁명: 차세대 성분 트렌드</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold mb-4 text-center">주목해야 할 핵심 키워드</h3>
+                    <p class="text-center text-gray-600 mb-4">언론 및 R&D에서 가장 주목받는 기술과 성분은 명확한 방향성을 보여줍니다.</p>
+                    <div class="chart-container">
+                        <canvas id="keywordTrendChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col justify-center items-center text-center">
+                    <h3 class="text-xl font-bold mb-2">차세대 성분 No.1: 엑소좀</h3>
+                     <p class="text-gray-600 mb-4">세포 간 신호 전달 물질로, 피부 재생 및 효능 전달의 새로운 장을 열고 있습니다.</p>
+                    <p class="text-6xl kpi-value">400%▲</p>
+                    <p class="text-gray-600 mt-2">지난 1년간 R&D 플랫폼 내 검색량 4배 증가.</p>
+                    <p class="text-5xl mt-6 kpi-value">$3.2B</p>
+                    <p class="text-gray-600 mt-2">2032년 글로벌 엑소좀 시장 규모 전망.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) return label;
+            
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            words.forEach(word => {
+                if ((currentLine + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+        
+        const palette = {
+            color1: '#BC5090', // Pink
+            color2: '#FF6361', // Coral
+            color3: '#FFA600', // Orange
+            color4: '#58508D', // Purple
+            color5: '#003F5C', // Dark Blue
+            lightGray: '#E5E7EB',
+            darkGray: '#4B5563'
+        };
+
+        const createQ2PerformanceChart = () => {
+            const ctx = document.getElementById('q2PerformanceChart').getContext('2d');
+            const rawLabels = ['APR (에이피알)', 'Amorepacific', 'Cosmax', 'LG H&H'];
+            const labels = rawLabels.map(wrapLabel);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '2분기 영업이익 성장률 (%)',
+                        data: [111, 555.5, 30.2, -65.4],
+                        backgroundColor: (context) => {
+                            const value = context.dataset.data[context.dataIndex];
+                            return value >= 0 ? palette.color2 : palette.darkGray;
+                        },
+                        borderColor: (context) => {
+                             const value = context.dataset.data[context.dataIndex];
+                            return value >= 0 ? palette.color1 : palette.lightGray;
+                        },
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: palette.lightGray
+                            },
+                             ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback,
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        const createKeywordTrendChart = () => {
+            const ctx = document.getElementById('keywordTrendChart').getContext('2d');
+            const rawLabels = ['뷰티테크 (AI, 디바이스)', '항노화 (NMN, 재생의학)', '엑소좀', 'ODM (공급망)', '신흥시장 (인도)'];
+            const labels = rawLabels.map(wrapLabel);
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '주요 키워드 관심도',
+                        data: [95, 85, 98, 80, 90],
+                        fill: true,
+                        backgroundColor: 'rgba(255, 99, 97, 0.2)',
+                        borderColor: palette.color2,
+                        pointBackgroundColor: palette.color2,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: palette.color2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: palette.lightGray
+                            },
+                            grid: {
+                                color: palette.lightGray
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 12
+                                },
+                                color: palette.darkGray
+                            },
+                            ticks: {
+                                backdropColor: 'rgba(255, 255, 255, 0.75)',
+                                stepSize: 20
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        window.onload = () => {
+            createQ2PerformanceChart();
+            createKeywordTrendChart();
+        };
+    </script>
+
+</body>
+</html>
