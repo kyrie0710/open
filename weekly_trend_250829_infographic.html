@@ -3,326 +3,470 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>글로벌 뷰티 & 과학 동향 인포그래픽 | 2025년 8월</title>
+    <title>주간 글로벌 뷰티 & 과학 트렌드 대시보드</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is designed as a single-page, scrollable dashboard with a fixed top navigation for easy access to key thematic sections: '시장 개요', '경쟁 구도', '기술 혁신', '항노화 트렌드', and '규제 동향'. This structure was chosen over a direct report replication to provide a non-linear, exploratory user experience. Users can get a quick overview from the main dashboard, then dive into specific areas of interest. Interactivity is centered around filter buttons that dynamically update both charts and content lists, allowing for direct comparison and focused analysis, which is more engaging and user-friendly than static text. -->
+    <!-- Visualization & Content Choices: 1. Market Overview: A doughnut chart was chosen to show the distribution of news categories, offering a quick, high-level understanding of the week's focus areas. Goal: Inform. Method: Chart.js Canvas. 2. Competitive Landscape: An interactive horizontal bar chart compares news volume for key companies. This visual is ideal for comparing entities. Users can filter by company type, triggering dynamic updates to the chart and a corresponding list of news articles. Goal: Compare. Method: Chart.js Canvas + JS DOM manipulation. 3. Tech/Anti-aging/Regulatory Info: Presented using styled HTML cards and lists for clarity and readability. Interactive elements like clickable cards reveal detailed information, breaking down complex topics into digestible chunks. Goal: Organize & Inform. Method: HTML/CSS/Tailwind + JS show/hide logic. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #0d1a2e;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
         }
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             margin-left: auto;
             margin-right: auto;
-            height: 320px;
-            max-height: 400px;
+            height: 300px;
+            max-height: 350px;
         }
         @media (min-width: 768px) {
             .chart-container {
-                height: 400px;
+                height: 350px;
+                max-height: 400px;
             }
         }
-        .stat-card h3 {
-            color: #FFA600;
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
         }
-        .flowchart-arrow {
-            font-size: 2rem;
-            color: #FF6361;
-            line-height: 1;
+        .nav-link.active, .nav-link:hover {
+            color: #D3A588;
+            border-bottom-color: #D3A588;
         }
-        .kpi-value {
-            font-weight: 900;
-            color: #FF6361;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        .filter-btn.active {
+            background-color: #8B5E34;
+            color: #FFFFFF;
+        }
+        .content-card {
+            background-color: #FFFFFF;
+            border: 1px solid #F0EAE3;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        }
+        .section-title-border {
+            border-bottom: 2px solid #EAE1D9;
         }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="antialiased">
 
-    <div class="container mx-auto p-4 md:p-8">
-
-        <header class="text-center mb-12 text-white">
-            <h1 class="text-4xl md:text-5xl font-black mb-2" style="color: #FFA600;">글로벌 뷰티 & 과학 인텔리전스</h1>
-            <p class="text-lg text-gray-300">2025년 8월 3주차 핵심 동향 요약</p>
-        </header>
-
-        <section class="mb-16">
-            <h2 class="text-3xl font-bold text-center mb-8 text-white">시장을 재편하는 3대 핵심 동력</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl p-6 text-center text-white border border-white/20">
-                    <div class="text-5xl mb-4">💻</div>
-                    <h3 class="text-2xl font-bold mb-2 text-amber-400">기술 통합</h3>
-                    <p class="text-gray-300">AI 기반 개인화 진단 기기가 소비자와의 상호작용을 근본적으로 바꾸고 있습니다. 데이터는 새로운 효능의 척도가 됩니다.</p>
-                </div>
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl p-6 text-center text-white border border-white/20">
-                    <div class="text-5xl mb-4">🌍</div>
-                    <h3 class="text-2xl font-bold mb-2 text-amber-400">지정학적 민첩성</h3>
-                    <p class="text-gray-300">무역 장벽과 신흥 시장의 부상은 공급망 다각화와 현지화 전략을 필수 과제로 만들고 있습니다.</p>
-                </div>
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl p-6 text-center text-white border border-white/20">
-                    <div class="text-5xl mb-4">🔬</div>
-                    <h3 class="text-2xl font-bold mb-2 text-amber-400">바이오 과학 우위</h3>
-                    <p class="text-gray-300">엑소좀, NMN 등 첨단 성분이 스킨케어의 '의료화'를 가속화하며 효능의 새로운 기준을 제시합니다.</p>
-                </div>
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-gray-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-[#8B5E34]">주간 트렌드 대시보드</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#overview" class="nav-link font-medium text-gray-600 pb-1">시장 개요</a>
+                <a href="#competition" class="nav-link font-medium text-gray-600 pb-1">경쟁 구도</a>
+                <a href="#tech" class="nav-link font-medium text-gray-600 pb-1">기술 혁신</a>
+                <a href="#anti-aging" class="nav-link font-medium text-gray-600 pb-1">항노화 트렌드</a>
+                <a href="#regulation" class="nav-link font-medium text-gray-600 pb-1">규제 동향</a>
             </div>
-        </section>
+        </nav>
+    </header>
 
-        <section class="mb-16">
-            <h2 class="text-3xl font-bold text-center mb-8 text-white">기술 혁신: 뷰티테크 경쟁 구도</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-bold mb-4 text-center">주요 기업 2분기 실적 성장률 비교</h3>
-                    <p class="text-center text-gray-600 mb-4">디바이스 중심의 APR이 경이로운 성장을 기록한 반면, 전통 강자들은 상반된 실적을 보였습니다.</p>
+    <main class="container mx-auto px-6 py-8 md:py-12">
+        
+        <section id="overview" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 section-title-border pb-4">주간 인텔리전스 브리핑</h2>
+            <p class="text-center text-lg text-gray-600 max-w-4xl mx-auto mb-10">
+                2025년 8월 마지막 주, 글로벌 뷰티 및 과학 산업의 핵심 동향을 분석합니다. 이번 주의 가장 큰 화두는 K-뷰티 시장의 지각 변동입니다. 기술 중심의 신흥 강자가 부상하며 전통적인 브랜드의 아성을 위협하고 있으며, AI와 뷰티 디바이스가 산업의 미래를 재편하고 있습니다. 본 대시보드를 통해 역동적인 시장의 흐름을 탐색해 보세요.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="content-card p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-center mb-4">주간 뉴스 카테고리 분포</h3>
                     <div class="chart-container">
-                        <canvas id="q2PerformanceChart"></canvas>
+                        <canvas id="categoryChart"></canvas>
                     </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col justify-center items-center">
-                    <h3 class="text-xl font-bold mb-4 text-center">새로운 패러다임: 진단 플라이휠</h3>
-                    <p class="text-center text-gray-600 mb-6">로레알의 '셀 바이오프린트'와 같은 기기는 '진단 → 맞춤 추천 → 효능 검증'의 선순환을 만들어냅니다. 이는 소비자의 구매 여정을 데이터 기반으로 전환시킵니다.</p>
-                    <div class="w-full max-w-md">
-                        <div class="flex flex-col items-center space-y-2">
-                            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg w-full text-center shadow">
-                                <span class="font-bold">1. 피부 진단</span> (가정용 디바이스)
-                            </div>
-                            <div class="flowchart-arrow">▼</div>
-                            <div class="bg-purple-100 border-l-4 border-purple-500 text-purple-700 p-4 rounded-lg w-full text-center shadow">
-                                <span class="font-bold">2. 개인 맞춤형 제품 추천</span> (AI 알고리즘)
-                            </div>
-                            <div class="flowchart-arrow">▼</div>
-                            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg w-full text-center shadow">
-                                <span class="font-bold">3. 효능 검증 및 재측정</span> (데이터로 확인)
-                            </div>
-                             <div class="flowchart-arrow">▼</div>
-                            <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-700 p-4 rounded-lg w-full text-center shadow">
-                                <span class="font-bold">4. 신뢰 기반 재구매</span> (충성도 강화)
-                            </div>
-                        </div>
+                <div class="content-card p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-center mb-4">이번 주 핵심 키워드</h3>
+                    <ul id="topKeywords" class="space-y-3 text-gray-700">
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="competition" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 section-title-border pb-4">경쟁 구도: 전략과 혁신</h2>
+            <p class="text-center text-lg text-gray-600 max-w-4xl mx-auto mb-10">
+                주요 기업들의 전략적 움직임을 통해 시장의 역동성을 파악합니다. 아래 필터를 사용하여 글로벌 MNC, K-뷰티 신흥 강자, ODM 기업들의 동향을 비교 분석하고 관련 뉴스를 확인해 보세요.
+            </p>
+            <div class="flex justify-center space-x-2 md:space-x-4 mb-8" id="competition-filters">
+                <button class="filter-btn active px-4 py-2 rounded-full bg-white border border-gray-300 text-sm md:text-base" data-filter="all">전체 보기</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white border border-gray-300 text-sm md:text-base" data-filter="mnc">글로벌 MNC</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white border border-gray-300 text-sm md:text-base" data-filter="k-beauty">K-뷰티</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white border border-gray-300 text-sm md:text-base" data-filter="odm">ODM</button>
+            </div>
+            <div class="grid lg:grid-cols-5 gap-8">
+                <div class="lg:col-span-3 content-card p-6 rounded-xl">
+                    <h3 class="text-xl font-bold text-center mb-4">주요 기업 뉴스량 비교</h3>
+                    <div class="relative w-full h-[400px] md:h-[500px]">
+                        <canvas id="competitionChart"></canvas>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 content-card p-6 rounded-xl">
+                    <h3 id="news-title" class="text-xl font-bold mb-4">관련 뉴스</h3>
+                    <div id="news-list" class="space-y-4 max-h-[450px] overflow-y-auto pr-2">
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="mb-16">
-            <h2 class="text-3xl font-bold text-center mb-8 text-white">글로벌 시장 재편: 기회와 위기</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="stat-card bg-white rounded-lg shadow-md p-6 text-center flex flex-col justify-center">
-                    <h3 class="text-xl font-bold mb-2">인도 럭셔리 뷰티 시장</h3>
-                    <p class="text-5xl kpi-value">5x</p>
-                    <p class="text-gray-600 mt-2">2035년까지 5배 성장 예상, 글로벌 뷰티의 마지막 성장 엔진으로 부상.</p>
+        <section id="tech" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 section-title-border pb-4">기술 혁신: AI와 디바이스</h2>
+             <p class="text-center text-lg text-gray-600 max-w-4xl mx-auto mb-10">
+                기술은 더 이상 보조 수단이 아닌, 뷰티 산업 혁신의 핵심 동력입니다. AI를 통한 개인화 서비스의 진화와 홈 뷰티 디바이스의 대중화가 어떻게 시장을 재정의하고 있는지 살펴보세요.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="content-card p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-4">🤖 AI와 개인화</h3>
+                    <p class="mb-4">AI는 R&D, 규제, 마케팅 등 뷰티 산업 가치 사슬 전반에 통합되고 있습니다. 특히 식약처의 AI 심사 시스템 도입 계획은 기업의 R&D 방향성에 큰 영향을 미칠 것입니다.</p>
+                    <ul id="ai-news" class="list-disc list-inside space-y-2 text-gray-700">
+                    </ul>
                 </div>
-                <div class="stat-card bg-white rounded-lg shadow-md p-6 text-center flex flex-col justify-center">
-                    <h3 class="text-xl font-bold mb-2">美, K-뷰티 관세 부과</h3>
-                    <p class="text-5xl kpi-value">15%</p>
-                    <p class="text-gray-600 mt-2">'가성비' 강점을 위협, 현지 생산 등 공급망 재편을 가속화하는 촉매제.</p>
-                </div>
-                 <div class="stat-card bg-white rounded-lg shadow-md p-6 text-center flex flex-col justify-center">
-                    <h3 class="text-xl font-bold mb-2">ODM 기업 호황</h3>
-                    <p class="text-5xl kpi-value">3조+</p>
-                    <p class="text-gray-600 mt-2">코스맥스, 한국콜마 상반기 합산 매출 3조원 돌파. 글로벌 K-뷰티 수요 증명.</p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="text-3xl font-bold text-center mb-8 text-white">바이오 혁명: 차세대 성분 트렌드</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-bold mb-4 text-center">주목해야 할 핵심 키워드</h3>
-                    <p class="text-center text-gray-600 mb-4">언론 및 R&D에서 가장 주목받는 기술과 성분은 명확한 방향성을 보여줍니다.</p>
-                    <div class="chart-container">
-                        <canvas id="keywordTrendChart"></canvas>
-                    </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col justify-center items-center text-center">
-                    <h3 class="text-xl font-bold mb-2">차세대 성분 No.1: 엑소좀</h3>
-                     <p class="text-gray-600 mb-4">세포 간 신호 전달 물질로, 피부 재생 및 효능 전달의 새로운 장을 열고 있습니다.</p>
-                    <p class="text-6xl kpi-value">400%▲</p>
-                    <p class="text-gray-600 mt-2">지난 1년간 R&D 플랫폼 내 검색량 4배 증가.</p>
-                    <p class="text-5xl mt-6 kpi-value">$3.2B</p>
-                    <p class="text-gray-600 mt-2">2032년 글로벌 엑소좀 시장 규모 전망.</p>
+                <div class="content-card p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-4">✨ 뷰티 디바이스 혁명</h3>
+                    <p class="mb-4">뷰티 디바이스는 틈새 시장을 넘어 산업 성장의 중심축이 되었습니다. 하드웨어 플랫폼과 소모품을 결합한 비즈니스 모델은 지속적인 수익과 데이터 확보의 핵심입니다.</p>
+                    <ul id="device-news" class="list-disc list-inside space-y-2 text-gray-700">
+                    </ul>
                 </div>
             </div>
         </section>
 
-    </div>
+        <section id="anti-aging" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 section-title-border pb-4">항노화 트렌드: 과학의 진보</h2>
+            <p class="text-center text-lg text-gray-600 max-w-4xl mx-auto mb-10">
+                항노화 시장은 바이오 기술에 기반한 과학적 성분으로 빠르게 전환되고 있습니다. PDRN, 엑소좀과 같은 차세대 성분과 노화의 근본 원인을 파헤치는 기초 과학의 발전을 확인해 보세요.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                 <div class="content-card p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">🧬 차세대 활성 성분</h3>
+                    <ul id="ingredient-news" class="space-y-2">
+                    </ul>
+                </div>
+                <div class="content-card p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">🔬 기초 과학의 발전</h3>
+                     <ul id="science-news" class="space-y-2">
+                    </ul>
+                </div>
+                <div class="content-card p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">💉 K-안티에이징 시술</h3>
+                    <ul id="procedure-news" class="space-y-2">
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="regulation" class="scroll-mt-24">
+            <h2 class="text-3xl font-bold text-center mb-4 section-title-border pb-4">글로벌 규제 동향</h2>
+            <p class="text-center text-lg text-gray-600 max-w-4xl mx-auto mb-10">
+               글로벌 시장 확장을 위해서는 복잡한 규제 환경에 대한 이해가 필수적입니다. 주요 국가별 규제 변화와 허위·과장 광고 단속과 같은 시장 리스크를 파악하고 전략적으로 대응해야 합니다.
+            </p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="content-card p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-3">🇺🇸 미국</h3>
+                    <p>K-뷰티 관세 부과 가능성 및 FDA의 특정 제품 형태 규제 강화.</p>
+                </div>
+                <div class="content-card p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-3">🇨🇳 중국</h3>
+                    <p>화장품 신원료 '즉시 심사제' 도입으로 시장 진입 속도 변화.</p>
+                </div>
+                <div class="content-card p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-3">🇻🇳 동남아</h3>
+                    <p>베트남 시장의 성장 잠재력과 함께 위조 상품 유통 리스크 상존.</p>
+                </div>
+                <div class="content-card p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-3">🇰🇷 한국</h3>
+                    <p>식약처의 허위·과장 광고 단속 강화 및 안전성 평가 제도 개편.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-white border-t border-gray-200 mt-16">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500">
+            <p>&copy; 2025 주간 글로벌 뷰티 & 과학 트렌드 대시보드. All Rights Reserved.</p>
+        </div>
+    </footer>
 
     <script>
-        const tooltipTitleCallback = (tooltipItems) => {
-            const item = tooltipItems[0];
-            let label = item.chart.data.labels[item.dataIndex];
-            if (Array.isArray(label)) {
-                return label.join(' ');
-            } else {
-                return label;
-            }
-        };
+        const rawData = [
+            { keyword: "로레알", category: "협업", title: "올리브영, 글로벌 1위 '로레알'과 멤버십 맞손…'마이뷰티박스' 연동", press: "전자신문", link: "https://www.etnews.com/20250826000269", group: "mnc" },
+            { keyword: "로레알", category: "R&D", title: "올릭스, 릴리·로레알과 함께 ‘글로벌’…이동기 대표 “특허 전략·플랫폼이 무기”", press: "더바이오", link: "https://www.thebionews.net/news/articleView.html?idxno=17444", group: "mnc" },
+            { keyword: "로레알", category: "연구", title: "'로레알-유네스코 여성과학자상' 시상식에서 만난 어메이징한 우먼들!", press: "Allure", link: "https://www.allurekorea.com/2025/08/26/loreal-unesco-for-women-in-science-awards/", group: "mnc" },
+            { keyword: "로레알", category: "뷰티테크", title: "나노엔텍, 로레알과 피부노화 분석기기 개발 협력", press: "이데일리", link: "https://www.edaily.co.kr/news/read?newsId=01200486635706992&mediaCodeNo=257", group: "mnc" },
+            { keyword: "에이피알", category: "뷰티테크", title: "APR, K-뷰티 대장주 등극…시총 아모레G 추월", press: "뉴스1", link: "https://www.news1.kr/articles/?5534821", group: "k-beauty" },
+            { keyword: "에이피알", category: "실적", title: "에이피알, PDRN샷 글로벌 1500만개 판매 돌파", press: "파이낸셜뉴스", link: "https://www.fnnews.com/news/202508280907315343", group: "k-beauty" },
+            { keyword: "에이피알", category: "인사", title: "에이피알, 상반기 직원 평균 보수 7900만원…업계 최고", press: "아시아경제", link: "https://www.asiae.co.kr/article/2025082210064952857", group: "k-beauty" },
+            { keyword: "에이피알", category: "증권", title: "에이피알, 코스피200 특례편입 기대감에 5%대 강세", press: "한국경제", link: "https://www.hankyung.com/article/2025082736026", group: "k-beauty" },
+            { keyword: "LG생활건강", category: "M&A", title: "LG생건, 해태htb 매각 검토…화장품·뷰티테크에 집중", press: "연합뉴스", link: "https://www.yna.co.kr/view/AKR20250826042400003", group: "k-beauty" },
+            { keyword: "아모레퍼시픽", category: "마케팅", title: "설화수, 글로벌 앰배서더 틸다 스윈튼과 새 캠페인", press: "장업신문", link: "http://www.jangup.com/news/articleView.html?idxno=100032", group: "k-beauty" },
+            { keyword: "아모레퍼시픽", category: "AI", title: "프리메라, AI 활용 콘텐츠 크리에이터 '필 인플루언서' 모집", press: "뷰티누리", link: "https://www.beautynury.com/news/view/104923/cat/10", group: "k-beauty" },
+            { keyword: "코스맥스", category: "글로벌", title: "코스맥스, 인도·유럽 K뷰티 전진기지 구축", press: "매일경제", link: "https://www.mk.co.kr/news/business/11108253", group: "odm" },
+            { keyword: "코스맥스", category: "R&D", title: "코스맥스, 세계 최초 미백 기능성 파우더 식약처 허가", press: "코스인코리아", link: "https://www.cosinkorea.com/news/article.html?no=53075", group: "odm" },
+            { keyword: "코스맥스", category: "AI", title: "코스맥스-고려대, AI로 기후변화 맞춤 화장품 소재 개발", press: "AI타임스", link: "https://www.aitimes.com/news/articleView.html?idxno=153326", group: "odm" },
+            { keyword: "한국콜마", category: "거버넌스", title: "한국콜마, 오너 2세 경영권 분쟁 격화", press: "블로터", link: "https://www.bloter.net/news/articleView.html?idxno=620942", group: "odm" },
+            { keyword: "한국콜마", category: "증권", title: "한국콜마, 공매도 과열 종목 지정", press: "서울경제", link: "https://www.sedaily.com/NewsView/2D4B1YJ8B2", group: "odm" },
+            { keyword: "AI", category: "규제", title: "식약처, AI 기반 기능성 화장품 심사 시스템 도입 추진", press: "약업신문", link: "https://www.yakup.com/news/index.html?mode=view&cat=12&nid=299447", group: "tech" },
+            { keyword: "뷰티 디바이스", category: "뷰티테크", title: "샤페론-아띠베뷰티, HIFU 기술 홈케어 디바이스 개발 MOU", press: "의학신문", link: "http://www.bosa.co.kr/news/articleView.html?idxno=2228551", group: "tech" },
+            { keyword: "PDRN", category: "항노화", title: "네오펙트, PDRN 대량 생산 특허 확보", press: "바이오스펙테이터", link: "http://www.biospectator.com/view/news_view.php?varAtcId=21639", group: "anti-aging-ingredient" },
+            { keyword: "엑소좀", category: "항노화", title: "엑소좀, '죽음의 계곡' 넘을 수 있을까", press: "히트뉴스", link: "http://www.hitnews.co.kr/news/articleView.html?idxno=43093", group: "anti-aging-ingredient" },
+            { keyword: "NAD", category: "항노화", title: "코스맥스, 고기능성 항노화 원료 NAD 연구 박차", press: "팜뉴스", link: "https://www.pharmnews.com/news/articleView.html?idxno=242220", group: "anti-aging-ingredient" },
+            { keyword: "유전체학", category: "생명과학", title: "콜로라도대, 노화 관련 신규 유전자 408개 발견", press: "헬로디디", link: "https://www.hellodd.com/news/articleView.html?idxno=107297", group: "anti-aging-science" },
+            { keyword: "세포생물학", category: "생명과학", title: "세포 스트레스 반응이 노화에 미치는 영향 규명", press: "메디컬투데이", link: "https://www.mdtoday.co.kr/news/view/1065579975328452", group: "anti-aging-science" },
+            { keyword: "피부과학", category: "피부학", title: "피부 마이크로바이옴, 건강과 질병의 핵심", press: "의계신문", link: "http://www.physician.or.kr/news/articleView.html?idxno=154321", group: "anti-aging-science" },
+            { keyword: "지방줄기세포", category: "항노화", title: "K-안티에이징, 지방줄기세포로 글로벌 시장 공략", press: "메디소비자뉴스", link: "https://www.medisobizanews.com/news/articleView.html?idxno=117462", group: "anti-aging-procedure" },
+        ];
 
-        const wrapLabel = (label) => {
-            const maxLength = 16;
-            if (label.length <= maxLength) return label;
-            
-            const words = label.split(' ');
-            const lines = [];
-            let currentLine = '';
+        document.addEventListener('DOMContentLoaded', () => {
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            const competitionCtx = document.getElementById('competitionChart').getContext('2d');
+            let competitionChart;
 
-            words.forEach(word => {
-                if ((currentLine + word).length > maxLength) {
-                    lines.push(currentLine.trim());
-                    currentLine = '';
-                }
-                currentLine += word + ' ';
-            });
-            lines.push(currentLine.trim());
-            return lines;
-        };
-        
-        const palette = {
-            color1: '#BC5090', // Pink
-            color2: '#FF6361', // Coral
-            color3: '#FFA600', // Orange
-            color4: '#58508D', // Purple
-            color5: '#003F5C', // Dark Blue
-            lightGray: '#E5E7EB',
-            darkGray: '#4B5563'
-        };
+            const renderCategoryChart = () => {
+                const categoryCounts = rawData.reduce((acc, item) => {
+                    let catName = '기타';
+                    if (item.group === 'mnc') catName = '글로벌 MNC';
+                    else if (item.group === 'k-beauty') catName = 'K-뷰티';
+                    else if (item.group === 'odm') catName = 'ODM';
+                    else if (item.group === 'tech') catName = '기술/AI';
+                    else if (item.group.startsWith('anti-aging')) catName = '항노화';
+                    
+                    acc[catName] = (acc[catName] || 0) + 1;
+                    return acc;
+                }, {});
 
-        const createQ2PerformanceChart = () => {
-            const ctx = document.getElementById('q2PerformanceChart').getContext('2d');
-            const rawLabels = ['APR (에이피알)', 'Amorepacific', 'Cosmax', 'LG H&H'];
-            const labels = rawLabels.map(wrapLabel);
-            
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: '2분기 영업이익 성장률 (%)',
-                        data: [111, 555.5, 30.2, -65.4],
-                        backgroundColor: (context) => {
-                            const value = context.dataset.data[context.dataIndex];
-                            return value >= 0 ? palette.color2 : palette.darkGray;
-                        },
-                        borderColor: (context) => {
-                             const value = context.dataset.data[context.dataIndex];
-                            return value >= 0 ? palette.color1 : palette.lightGray;
-                        },
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            grid: {
-                                color: palette.lightGray
-                            },
-                             ticks: {
-                                callback: function(value) {
-                                    return value + '%';
+                new Chart(categoryCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(categoryCounts),
+                        datasets: [{
+                            data: Object.values(categoryCounts),
+                            backgroundColor: ['#8B5E34', '#D3A588', '#EAE1D9', '#A98C78', '#C7B9AC'],
+                            borderColor: '#FDFBF8',
+                            borderWidth: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: {
+                                        family: "'Noto Sans KR', sans-serif",
+                                        size: 14
+                                    }
                                 }
                             }
-                        },
-                        y: {
-                            grid: {
+                        }
+                    }
+                });
+            };
+            
+            const renderTopKeywords = () => {
+                const keywordCounts = rawData.reduce((acc, item) => {
+                    acc[item.keyword] = (acc[item.keyword] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const sortedKeywords = Object.entries(keywordCounts)
+                    .sort(([,a],[,b]) => b-a)
+                    .slice(0, 5);
+
+                const topKeywordsEl = document.getElementById('topKeywords');
+                topKeywordsEl.innerHTML = sortedKeywords.map(([keyword, count]) => `
+                    <li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <span class="font-medium">${keyword}</span>
+                        <span class="text-sm font-bold text-white bg-[#D3A588] rounded-full px-3 py-1">${count}건</span>
+                    </li>
+                `).join('');
+            };
+
+            const renderNewsList = (data) => {
+                const newsListEl = document.getElementById('news-list');
+                if (data.length === 0) {
+                    newsListEl.innerHTML = `<p class="text-gray-500">선택한 필터에 해당하는 뉴스가 없습니다.</p>`;
+                    return;
+                }
+                newsListEl.innerHTML = data.map(item => `
+                    <div class="border-b pb-3">
+                        <a href="${item.link}" target="_blank" class="hover:text-[#8B5E34]">
+                            <h4 class="font-bold">${item.title}</h4>
+                            <p class="text-sm text-gray-500">${item.press}</p>
+                        </a>
+                    </div>
+                `).join('');
+            };
+
+            const renderCompetitionChart = (filter = 'all') => {
+                const filteredData = rawData.filter(item => ['mnc', 'k-beauty', 'odm'].includes(item.group));
+                
+                const companyData = filteredData.reduce((acc, item) => {
+                    let companyName = item.keyword;
+                    if (companyName.includes('LG')) companyName = 'LG생활건강';
+                    if (companyName.includes('아모레')) companyName = '아모레퍼시픽';
+                    
+                    if (!acc[companyName]) {
+                        acc[companyName] = { count: 0, group: item.group };
+                    }
+                    acc[companyName].count++;
+                    return acc;
+                }, {});
+
+                let chartData = Object.entries(companyData);
+
+                if (filter !== 'all') {
+                    chartData = chartData.filter(([, data]) => data.group === filter);
+                }
+
+                const labels = chartData.map(([name]) => name);
+                const data = chartData.map(([, data]) => data.count);
+                
+                if (competitionChart) {
+                    competitionChart.destroy();
+                }
+
+                competitionChart = new Chart(competitionCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '뉴스 언급 횟수',
+                            data: data,
+                            backgroundColor: '#D3A588',
+                            borderColor: '#8B5E34',
+                            borderWidth: 1,
+                            borderRadius: 5
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
                                 display: false
+                            },
+                             tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${context.raw}건`;
+                                    }
+                                }
                             }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
                         },
-                        tooltip: {
-                            callbacks: {
-                                title: tooltipTitleCallback,
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.x !== null) {
-                                        label += context.parsed.x + '%';
-                                    }
-                                    return label;
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: '#F0EAE3'
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: false
                                 }
                             }
                         }
                     }
+                });
+                
+                let newsListData = rawData;
+                if (filter !== 'all') {
+                    newsListData = rawData.filter(item => item.group === filter);
+                }
+                renderNewsList(newsListData.filter(item => ['mnc', 'k-beauty', 'odm'].includes(item.group)));
+                
+                const newsTitleEl = document.getElementById('news-title');
+                const filterMap = {
+                    'all': '전체 관련 뉴스',
+                    'mnc': '글로벌 MNC 관련 뉴스',
+                    'k-beauty': 'K-뷰티 관련 뉴스',
+                    'odm': 'ODM 관련 뉴스'
+                };
+                newsTitleEl.textContent = filterMap[filter];
+            };
+            
+            const renderThematicNews = () => {
+                const createList = (elId, group) => {
+                    const el = document.getElementById(elId);
+                    const news = rawData.filter(item => item.group === group);
+                    el.innerHTML = news.map(item => `<li><a href="${item.link}" target="_blank" class="hover:text-[#8B5E34]">${item.title}</a></li>`).join('');
+                };
+                
+                const createCardList = (elId, groupPrefix) => {
+                    const el = document.getElementById(elId);
+                    const news = rawData.filter(item => item.group.startsWith(groupPrefix));
+                    const groupedByKeyword = news.reduce((acc, item) => {
+                        if (!acc[item.keyword]) {
+                            acc[item.keyword] = [];
+                        }
+                        acc[item.keyword].push(item);
+                        return acc;
+                    }, {});
+
+                    el.innerHTML = Object.entries(groupedByKeyword).map(([keyword, items]) => `
+                        <div class="mb-3">
+                            <p class="font-bold text-md text-[#8B5E34]">${keyword}</p>
+                            <ul class="list-disc list-inside text-sm pl-2">
+                                ${items.map(i => `<li><a href="${i.link}" target="_blank" class="hover:underline">${i.title}</a></li>`).join('')}
+                            </ul>
+                        </div>
+                    `).join('');
+                };
+
+                createList('ai-news', 'tech');
+                createList('device-news', 'tech');
+                createCardList('ingredient-news', 'anti-aging-ingredient');
+                createCardList('science-news', 'anti-aging-science');
+                createCardList('procedure-news', 'anti-aging-procedure');
+            };
+
+            document.getElementById('competition-filters').addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    document.querySelectorAll('#competition-filters .filter-btn').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    const filter = e.target.dataset.filter;
+                    renderCompetitionChart(filter);
                 }
             });
-        };
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
 
-        const createKeywordTrendChart = () => {
-            const ctx = document.getElementById('keywordTrendChart').getContext('2d');
-            const rawLabels = ['뷰티테크 (AI, 디바이스)', '항노화 (NMN, 재생의학)', '엑소좀', 'ODM (공급망)', '신흥시장 (인도)'];
-            const labels = rawLabels.map(wrapLabel);
-
-            new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: '주요 키워드 관심도',
-                        data: [95, 85, 98, 80, 90],
-                        fill: true,
-                        backgroundColor: 'rgba(255, 99, 97, 0.2)',
-                        borderColor: palette.color2,
-                        pointBackgroundColor: palette.color2,
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: palette.color2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: {
-                                color: palette.lightGray
-                            },
-                            grid: {
-                                color: palette.lightGray
-                            },
-                            pointLabels: {
-                                font: {
-                                    size: 12
-                                },
-                                color: palette.darkGray
-                            },
-                            ticks: {
-                                backdropColor: 'rgba(255, 255, 255, 0.75)',
-                                stepSize: 20
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                title: tooltipTitleCallback
-                            }
-                        }
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 120) {
+                        current = section.getAttribute('id');
                     }
-                }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
             });
-        };
 
-        window.onload = () => {
-            createQ2PerformanceChart();
-            createKeywordTrendChart();
-        };
+            renderCategoryChart();
+            renderTopKeywords();
+            renderCompetitionChart('all');
+            renderThematicNews();
+        });
     </script>
-
 </body>
 </html>
