@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주간 글로벌 뷰티 & 사이언스 동향 인포그래픽</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 45vh;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 380px;
+            }
+        }
+        .flow-arrow {
+            font-size: 2.5rem;
+            line-height: 1;
+            color: #118AB2;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="text-[#073B4C]">
+
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: A top-to-bottom narrative scrollable infographic. The structure begins with a high-level overview (The Big Picture), drills down into specific corporate strategies (MNC Moves), analyzes key market conversations (Trending Keywords), explores scientific advancements (Scientific Frontiers), and concludes with a summary. This linear storytelling approach is chosen to guide the user through a curated analysis of the week's events, making complex information easily digestible. -->
+    <!-- Visualization & Content Choices: News Distribution (Donut Chart, Goal: Inform, Chart.js, NO SVG) provides a quick thematic breakdown. MNC Updates (Styled Cards, Goal: Organize, HTML/CSS, NO SVG) offer scannable summaries. Trending Keywords (Horizontal Bar Chart, Goal: Compare, Chart.js, NO SVG) visually ranks discussion topics. Science Topics (Bar Chart, Goal: Organize, Chart.js, NO SVG) highlights key research areas. Gut-Skin Axis (Flow Diagram, Goal: Organize, HTML/CSS, NO SVG) simplifies a complex biological concept. All choices support the narrative flow and adhere to technical constraints. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-black text-[#073B4C] mb-3">주간 글로벌 뷰티 & 사이언스 동향</h1>
+            <p class="text-lg text-[#118AB2] font-medium">2025년 9월 1일 – 9월 5일</p>
+        </header>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-4">한눈에 보는 주간 동향</h2>
+            <p class="text-center text-gray-700 max-w-3xl mx-auto mb-8">
+                이번 주는 K-뷰티의 약진에 대응하는 글로벌 기업들의 전략적 제휴가 돋보였으며, 동시에 피부 과학과 생명 과학 분야에서는 마이크로바이옴과 같은 혁신 기술이 핵심 의제로 떠올랐습니다. 시장은 기업의 전략적 움직임과 과학적 혁신 모두에 높은 관심을 보였습니다.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-white rounded-lg shadow-xl p-6">
+                <div class="chart-container">
+                    <canvas id="categoryDistributionChart"></canvas>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-[#073B4C] mb-4">주요 뉴스 카테고리 분포</h3>
+                    <p class="text-gray-600 mb-4">
+                        전체 뉴스 중 절반 가까이가 글로벌 MNC 브랜드의 동향에 집중되었습니다. 이는 시장이 대기업의 전략적 결정에 얼마나 민감하게 반응하는지를 보여줍니다. 그 뒤를 이어 화장품 산업 전반의 소식과 과학 기술 동향이 비슷한 비중을 차지했습니다.
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex items-center"><div class="w-4 h-4 rounded-full mr-3 bg-[#118AB2]"></div><span class="font-semibold">MNC 브랜드 (47%)</span></div>
+                        <div class="flex items-center"><div class="w-4 h-4 rounded-full mr-3 bg-[#06D6A0]"></div><span class="font-semibold">화장품 뉴스 (27%)</span></div>
+                        <div class="flex items-center"><div class="w-4 h-4 rounded-full mr-3 bg-[#FFD166]"></div><span class="font-semibold">과학 기술 (26%)</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">MNC 기업들의 주요 움직임</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-[#118AB2]">
+                    <h3 class="text-xl font-bold mb-2">로레알</h3>
+                    <p class="text-gray-600">CJ올리브영과 멤버십을 연동하는 등 K-뷰티에 대응하기 위한 파트너십을 강화하고, 뷰티테크 리더십을 공고히 하기 위해 성인 문해교육 교과서를 개발하는 등 사회적 활동도 병행했습니다.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-[#06D6A0]">
+                    <h3 class="text-xl font-bold mb-2">에스티로더</h3>
+                    <p class="text-gray-600">중국 하이엔드 향수 시장을 정조준하고 신규 럭셔리 라인을 론칭했습니다. 현지 R&D 투자를 확대하며 프리미엄 시장에서의 지배력을 강화하려는 전략입니다.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-[#FFD166]">
+                    <h3 class="text-xl font-bold mb-2">시세이도</h3>
+                    <p class="text-gray-600">최근 인수한 브랜드를 앞세워 중국 시장 공략을 가속화하고 있습니다. 안티에이징과 더마톨로지 분야의 혁신을 통해 시장 점유율 확대를 목표로 합니다.</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-[#FF6B6B]">
+                    <h3 class="text-xl font-bold mb-2">P&G</h3>
+                    <p class="text-gray-600">클린뷰티와 지속가능성을 중시하는 인디 브랜드 인수를 검토하며 포트폴리오 다각화에 나섰습니다. 새로운 소비자층을 흡수하려는 M&A 전략이 활발합니다.</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-[#EE92C2]">
+                    <h3 class="text-xl font-bold mb-2">유니레버</h3>
+                    <p class="text-gray-600">성분 투명성과 지속가능성에 초점을 맞춘 퍼스널 케어 라인을 확장했습니다. 재활용 포장과 자연 유래 성분을 강조한 신제품 출시가 이어졌습니다.</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-[#073B4C]">
+                    <h3 class="text-xl font-bold mb-2">아모레퍼시픽</h3>
+                    <p class="text-gray-600">AI 기반 피부 분석 서비스를 모바일 앱에 도입하며 디지털 전환과 개인화 서비스에 집중했습니다. 고객 경험 강화를 위한 기술 투자가 핵심입니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16 bg-white rounded-lg shadow-xl p-6">
+            <h2 class="text-3xl font-bold text-center mb-8">시장을 움직인 키워드</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                 <div>
+                    <h3 class="text-xl font-bold text-[#073B4C] mb-4">주간 핵심 토픽</h3>
+                    <p class="text-gray-600 mb-4">이번 주 업계 담론은 '협업'과 '파트너십'이 지배했습니다. 이는 현재 시장에서 전략적 제휴가 얼마나 중요한지를 보여줍니다. 기술 측면에서는 '뷰티테크'와 '의료' 분야에 대한 관심이 높게 나타났습니다.</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="keywordChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8">뷰티의 과학적 진보</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-bold text-[#073B4C] mb-4 text-center">주요 연구 분야</h3>
+                    <p class="text-gray-600 mb-6 text-center">
+                        화장품 연구는 유효 성분의 '피부 흡수율'을 높이는 데 집중되고 있습니다. '의료' 및 '피부과학' 분야의 발전이 화장품 기술에 직접적인 영향을 미치고 있으며, '항노화'는 여전히 가장 중요한 연구 주제 중 하나입니다.
+                    </p>
+                    <div class="chart-container h-80">
+                        <canvas id="scienceTopicsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-xl p-6">
+                    <h3 class="text-xl font-bold text-[#073B4C] mb-4 text-center">장-피부 축 (Gut-Skin Axis)</h3>
+                    <p class="text-gray-600 mb-6 text-center">
+                        장 건강이 피부에 직접적인 영향을 미친다는 '장-피부 축' 개념이 주목받고 있습니다. 건강한 장은 피부 장벽 강화와 노화 방지의 핵심 열쇠입니다.
+                    </p>
+                    <div class="flex flex-col items-center justify-center space-y-2 text-center h-full">
+                        <div class="p-4 bg-[#E0FBFC]/50 border-2 border-[#118AB2] rounded-lg w-full">
+                            <p class="font-bold">건강한 장내 환경</p>
+                            <p class="text-sm">균형잡힌 마이크로바이옴</p>
+                        </div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="p-4 bg-[#EBFADF]/50 border-2 border-[#06D6A0] rounded-lg w-full">
+                            <p class="font-bold">염증 감소 & 영양 흡수</p>
+                        </div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="p-4 bg-[#FFF6E0]/50 border-2 border-[#FFD166] rounded-lg w-full">
+                            <p class="font-bold">맑고 건강한 피부</p>
+                             <p class="text-sm">강화된 피부 장벽</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-12 pt-6 border-t border-gray-300">
+            <p class="text-gray-600">본 인포그래픽은 2025년 9월 첫째 주 공개된 글로벌 뉴스를 기반으로 제작되었습니다.</p>
+        </footer>
+    </div>
+
+<script>
+    const DATA = [
+        { keyword: "로레알, 뷰티테크", category: "뷰티테크" },
+        { keyword: "로레알", category: "협업" },
+        { keyword: "로레알", category: "파트너십" },
+        { keyword: "에스티로더", category: "시장" },
+        { keyword: "에스티로더", category: "신제품" },
+        { keyword: "시세이도", category: "시장" },
+        { keyword: "P&G", category: "M&A" },
+        { keyword: "유니레버", category: "신제품" },
+        { keyword: "아모레퍼시픽", category: "뷰티테크" },
+        { keyword: "기반기술", category: "항노화" },
+        { keyword: "기반기술", category: "마이크로바이옴" },
+        { keyword: "기반기술", category: "피부과학" },
+        { keyword: "기반기술", category: "화학" },
+        { keyword: "화장품 뉴스", category: "규제" },
+        { keyword: "화장품 뉴스", category: "파트너십" },
+        { keyword: "기반기술 : dermatology", category: "의료" },
+        { keyword: "기반기술 : dermatology", category: "협업" },
+        { keyword: "기반기술 : dermatology", category: "M&A" }
+    ];
+
+    const wrapLabel = (label) => {
+        const maxLength = 16;
+        if (typeof label !== 'string' || label.length <= maxLength) return label;
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).trim().length > maxLength) {
+                lines.push(currentLine.trim());
+                currentLine = word;
+            } else {
+                currentLine = (currentLine + ' ' + word).trim();
+            }
+        });
+        if (currentLine) lines.push(currentLine.trim());
+        return lines.length > 0 ? lines : [label];
+    };
+
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        return Array.isArray(label) ? label.join(' ') : label;
+    };
+
+    const sharedChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: { title: tooltipTitleCallback },
+                bodyFont: { family: 'Noto Sans KR' },
+                titleFont: { family: 'Noto Sans KR' }
+            }
+        },
+        scales: {
+            x: { ticks: { font: { family: 'Noto Sans KR' } } },
+            y: { ticks: { font: { family: 'Noto Sans KR' } } }
+        }
+    };
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        // Category Distribution Chart
+        const mncCount = DATA.filter(d => d.keyword.includes("로레알") || d.keyword.includes("에스티로더") || d.keyword.includes("시세이도") || d.keyword.includes("P&G") || d.keyword.includes("유니레버") || d.keyword.includes("아모레퍼시픽")).length;
+        const newsCount = DATA.filter(d => d.keyword.includes("화장품 뉴스")).length;
+        const scienceCount = DATA.length - mncCount - newsCount;
+
+        new Chart(document.getElementById('categoryDistributionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['MNC 브랜드', '화장품 뉴스', '과학 기술'],
+                datasets: [{
+                    data: [mncCount, newsCount, scienceCount],
+                    backgroundColor: ['#118AB2', '#06D6A0', '#FFD166'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4
+                }]
+            },
+            options: { ...sharedChartOptions, cutout: '60%' }
+        });
+
+        // Keyword Chart
+        const categoryCounts = DATA.reduce((acc, item) => {
+            let cat = item.category.trim().replace(/\*/g, '');
+            acc[cat] = (acc[cat] || 0) + 1;
+            return acc;
+        }, {});
+        const sortedCategories = Object.entries(categoryCounts).sort(([, a], [, b]) => b - a).slice(0, 6);
+        
+        new Chart(document.getElementById('keywordChart'), {
+            type: 'bar',
+            data: {
+                labels: sortedCategories.map(c => c[0]),
+                datasets: [{
+                    label: '뉴스 수',
+                    data: sortedCategories.map(c => c[1]),
+                    backgroundColor: ['#118AB2', '#06D6A0', '#FFD166', '#FF6B6B', '#EE92C2', '#073B4C'],
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: { grid: { display: false }, ticks: { stepSize: 1 } },
+                    y: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Science Topics Chart
+        const scienceTopics = DATA.filter(d => d.keyword.includes("기반기술"))
+            .reduce((acc, item) => {
+                let cat = item.category.trim().replace(/\*/g, '');
+                acc[cat] = (acc[cat] || 0) + 1;
+                return acc;
+            }, {});
+        const sortedScience = Object.entries(scienceTopics).sort(([, a], [, b]) => b - a).slice(0, 5);
+
+        new Chart(document.getElementById('scienceTopicsChart'), {
+            type: 'bar',
+            data: {
+                labels: sortedScience.map(c => c[0]),
+                datasets: [{
+                    label: '언급 빈도',
+                    data: sortedScience.map(c => c[1]),
+                    backgroundColor: ['#118AB2', '#06D6A0', '#FFD166', '#FF6B6B', '#073B4C'],
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { display: false }, ticks: { stepSize: 1 } }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
+
